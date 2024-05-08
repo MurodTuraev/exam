@@ -1,6 +1,5 @@
 .venv
 venv
-.github
 .idea
 .DS_Store
 .run
