@@ -3,6 +3,7 @@ from werehouse import serializers
 from werehouse import models
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.db.models import Value
 
 # Create your views here.
 class CategoryAPIView(APIView):
@@ -33,3 +34,17 @@ class WarehouseAPIView(APIView):
         return Response(serializer.data)
 
 
+class RawMaterialsNeeded(APIView):
+    serializer_class = serializers.MaterialNeededSerializer
+    def post(self, request, *args, **kwargs):
+        product = request.data['product']
+        quantity = request.data['quantity']
+        products = serializers.CategoryModel.objects.filter(code=product).annotate(
+            quantity=Value(quantity)
+        ).prefetch_related('product')
+        serializer = serializers.MaterialNeededSerializer(instance=products, many=True)
+        return Response(
+            {
+                'result': serializer.data
+            }
+        )

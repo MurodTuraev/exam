@@ -30,3 +30,46 @@ class WarehouseSerializer(serializers.ModelSerializer):
     class Meta:
         model = WarehouseModel
         fields = ('material_id','remainder','price')
+
+
+class MaterialNeededSerializer(serializers.ModelSerializer):
+    quantity = serializers.IntegerField()
+    product_materials = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CategoryModel
+        fields = (
+            'name',
+            'quantity',
+            'product_materials'
+        )
+
+    @staticmethod
+    def get_product_materials(obj):
+
+        result = []
+        quantity = obj.quantity
+
+        for material in obj.product_material.all():
+            warehouses = Warehouse.objects.filter(material__id=material.id)
+
+            name = material.material.name
+            limit = round((int(quantity) * material.quantity), 4)
+
+            for warehouse in warehouses:
+
+                price = warehouse.price
+                if limit > warehouse.remainder:
+                    qty = warehouse.remainder
+                    limit = limit - qty
+                else:
+                    qty = limit
+
+                result.append({
+                    'warehouse_id': warehouse.id,
+                    'material_name': name,
+                    'qty': qty,
+                    'price': price,
+                })
+
+        return result
