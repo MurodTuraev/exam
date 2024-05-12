@@ -27,6 +27,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+GLOBAL_IP = "http://195.158.9.252:2442"  # real
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://195.158.9.252:2442',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://195.158.9.252:2442",
+]
 
 # Application definition
 
