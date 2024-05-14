@@ -12,13 +12,13 @@ RUN apk add gcc libc-dev libffi-dev jpeg-dev zlib-dev libjpeg
 RUN apk add postgresql-dev
 
 RUN pip install --upgrade pip
-COPY ./requirements.txt .
+COPY ./requiriments.txt .
 COPY ./entrypoint.sh .
 
 
 
 RUN chmod +x entrypoint.sh
-RUN pip install -r requirements.txt
+RUN pip install -r requiriments.txt
 
 
 # copy project
