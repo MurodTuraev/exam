@@ -20,4 +20,4 @@ jobs:
           script: >
             cd ${{ secrets.PROJECT_PATH }} 
             && pip install -r requiriments.txt
-            && python3 manage.py runserver 0.0.0.0:2442
+            && docker-compose up -d --build
